@@ -1,0 +1,5 @@
+D:\_alpha\external\xcompiler\utils\hct>hctstart d:\_alpha\external\xcompiler d:\_alpha\external\xcompiler\build
+hctstart D:\_mockup_dev\external\xcompiler D:\_mockup_dev\external\xcompiler\build
+hctbuild -s -x64 -vs2019 -no-dxilconv
+
+tools\sharpmake\tmp\bin\debug\Sharpmake.Application.exe /sources(@"alpha.sharpmake.cs")

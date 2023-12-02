@@ -1,0 +1,30 @@
+---
+BasedOnStyle: Mozilla
+AccessModifierOffset: -8
+AlignAfterOpenBracket: DontAlign
+AlignEscapedNewlines: Left
+AlignOperands: false
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AlwaysBreakAfterReturnType: None
+BinPackArguments: true
+BinPackParameters: true
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBraces: Allman
+BreakInheritanceList: AfterColon
+BreakBeforeTernaryOperators: false
+BreakStringLiterals: false
+ColumnLimit: 160
+IncludeBlocks: Merge
+IndentCaseLabels: false
+IndentWidth: 8
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+ReflowComments: false
+SortIncludes: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeCpp11BracedList: true
+UseTab: ForIndentation
+...

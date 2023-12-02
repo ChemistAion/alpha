@@ -1,0 +1,9 @@
+{
+	"Console": true,
+	"Workers": 8,
+	"Storage Update Rate": 1.0,
+	"Volumes" :
+	[
+		"test"
+	]
+}

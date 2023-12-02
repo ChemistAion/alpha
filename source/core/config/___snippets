@@ -1,0 +1,244 @@
+////////////////////////////////////////////////////////////////////////////////
+	
+	Config::MetaValue GetMetaValue(const simdjson::dom::element& element) noexcept;
+	
+	Config::MetaValue GetMetaValue(const simdjson::dom::element& element) noexcept
+	{
+		switch (element.type())
+		{
+		case simdjson::dom::element_type::NULL_VALUE:
+			return Config::MetaValue{ Config::Null() };
+		case simdjson::dom::element_type::STRING:
+			return Config::MetaValue{ Config::CISTA::string(element) };
+		case simdjson::dom::element_type::INT64:
+			return Config::MetaValue{ std::int64_t(element) };
+		case simdjson::dom::element_type::UINT64:
+			return Config::MetaValue{ std::uint64_t(element) };
+		case simdjson::dom::element_type::DOUBLE:
+			return Config::MetaValue{ double(element) };
+		case simdjson::dom::element_type::BOOL:
+			return Config::MetaValue{ bool(element) };
+		case simdjson::dom::element_type::ARRAY:
+		{
+			auto unique = Config::CISTA::make_unique<Config::MetaArray>();
+	
+			for (const auto& item : simdjson::dom::array(element))
+			{
+				unique->emplace_back(GetMetaValue(item));
+			}
+			
+			return Config::MetaValue{ std::move(unique) };
+		}
+		case simdjson::dom::element_type::OBJECT:
+		{
+			auto unique = Config::CISTA::make_unique<Config::MetaObject>();
+		
+			for (const auto& item : simdjson::dom::object(element))
+			{
+				unique->emplace
+				(
+					Config::CISTA::string(item.key),
+					GetMetaValue(item.value)
+				);
+			}
+			
+			return Config::MetaValue{ std::move(unique) };
+		}
+		default:
+		{
+			assert(false);
+			break;
+		}
+		}
+		
+		return Config::MetaValue{ Config::Null() };
+	}
+
+////////////////////////////////////////////////////////////////////////////////
+
+//	Config::CISTA::hash_map<Config::CISTA::string, Config::CISTA::string> test1;
+//	
+//	test1.emplace("key1_1", "val1_1");
+//	test1.emplace("key1_2", "val1_2");
+//	test1.emplace("key1_3", "val1_3");
+//	
+//	using Variant = CISTA::variant<CISTA::string, std::int64_t>;
+//	
+//	Variant test2a(CISTA::string("123"));
+//	Variant test2b(std::int64_t(456));
+//	//Variant test2b;
+//	//test2b.emplace<std::int64_t>(std::int64_t(456));
+//	
+//	//using Container = CISTA::hash_set<Variant>;
+//	using Container = CISTA::hash_set<int>;
+//	
+//	//auto test2a = Container
+//	//{
+//	//	{ Variant { CISTA::string {"123"} } }
+//	//};
+//	auto test2 = Container
+//	{
+//		{ 123 }
+//	};
+//	
+//	std::vector<unsigned char> buf2a;
+//	buf2a = cista::serialize(test2a);
+//	
+//	auto output2a = cista::deserialize<Variant>(buf2a);
+//	
+//	//cista::buf mmap{ cista::mmap{"cista.test"} };
+//	//cista::serialize(mmap, test2b);
+//	
+//	//auto output2a = cista::deserialize<Variant>(buf2a);
+//	//auto output2b = cista::deserialize<Variant>(buf2b);
+//	
+//	//	auto deserialized = cista::deserialize<decltype(test1)>(buf);
+//	//	
+//	//	
+//	//	for (auto it = deserialized->begin(); it != deserialized->end(); ++it)
+//	//	{
+//	//		auto key = it->first;
+//	//		auto val = it->second;
+//	//		continue;
+//	//	}
+
+//	Config::CISTA::hash_map<Config::CISTA::string, Config::CISTA::string> test1;
+//	
+//	test1.emplace("key1_1", "val1_1");
+//	test1.emplace("key1_2", "val1_2");
+//	test1.emplace("key1_3", "val1_3");
+//	
+//	std::vector<unsigned char> buf;
+//	buf = cista::serialize(test1);
+//	
+//	auto deserialized = cista::deserialize<decltype(test1)>(buf);
+//	
+//	
+//	for (auto it = deserialized->begin(); it != deserialized->end(); ++it)
+//	{
+//		auto key = it->first;
+//		auto val = it->second;
+//		continue;
+//	}
+
+
+//	for (const auto [key, error] : document.get_object())
+//	{
+//		switch (document.type())
+//		{
+//		case simdjson::ondemand::json_type::string:
+//		{
+//			break;
+//		}
+//		case simdjson::ondemand::json_type::number:
+//		{
+//			break;
+//		}
+//		case simdjson::ondemand::json_type::array:
+//		{
+//			break;
+//		}
+//		case simdjson::ondemand::json_type::object:
+//		{
+//			break;
+//		}
+//		case simdjson::ondemand::json_type::boolean:
+//		{
+//			break;
+//		}
+//		case simdjson::ondemand::json_type::null:
+//		{
+//			break;
+//		}
+//		default:
+//		{
+//			break;
+//		}
+//		}
+//	
+//		continue;
+//	}
+
+
+
+//auto test = JSON::GetValue(parser.iterate(json));
+
+////////////////////////////////////////////////////////////////////////////////
+
+//		auto count = document.count_elements();
+
+//		for (const auto [key, value] : document.get_object())
+//		{
+//			continue;
+//		}
+
+
+
+//	switch (element.type())
+//	{
+//	case simdjson::ondemand::json_type::string:
+//	{
+//		//if (const auto result = element.get_string(); false == result.error())
+//		//{
+//		//	//return std::string(result.value_unsafe());
+//		//}
+//		//
+//		////return std::string();
+//		break;
+//	}
+//	case simdjson::ondemand::json_type::number:
+//	{
+//		//return Config::Null{};
+//		break;
+//	}
+//	case simdjson::ondemand::json_type::array:
+//	{
+//		Config::Value value = std::make_unique<Config::Array>();
+//		auto& array = *std::get<std::unique_ptr<Config::Array>>(value);
+//	
+//	
+//		//for (const auto& item : simdjson::dom::array(element))
+//		//{
+//		//	array.emplace_back(GetValue(item));
+//		//}	
+//	
+//		break;
+//	}
+//	case simdjson::ondemand::json_type::object:
+//	{
+//		Config::Value value = std::make_unique<Config::Object>();
+//		auto& object = *std::get<std::unique_ptr<Config::Object>>(value);
+//	
+//		for (auto field : element.get_object())
+//		{
+//			auto key = field.key();
+//			continue;
+//			//GetValue(object, field.value());
+//		}
+//		//	
+//		//	//	for (auto [field, error] : element.get_object())
+//		//	//	{
+//		//	//		continue;
+//		//	//	}
+//		//	//	for (const auto& item : simdjson::dom::object(element))
+//		//	//	{
+//		//	//		object.emplace(item.key, GetValue(item.value));
+//		//	//	}
+//		//	
+//		//	//return value;
+//		break;
+//	}
+//	case simdjson::ondemand::json_type::boolean:
+//	{
+//		//return element.get_bool();
+//		break;
+//	}
+//	case simdjson::ondemand::json_type::null:
+//	{
+//		break;
+//	}
+//	default:
+//	{
+//		break;
+//	}
+//	}
